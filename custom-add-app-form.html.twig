@@ -1,0 +1,43 @@
+<div class="page__tasks">
+      <div class="container">
+          
+  <div class="contextual-region block block--apigee-kickstart-tabs my-3">
+
+  
+    <div data-contextual-id="block:block=apigee_kickstart_tabs:langcode=en" data-contextual-token="KRmPb_bUHyBrytiUEggdnxHl-LHWDGEvjw-bK9rzORo" class="contextual"><button class="trigger focusable visually-hidden" type="button" aria-pressed="false">Open Primary tabs configuration options</button>
+  
+
+
+  <ul class="contextual-links nav" hidden="">
+    <li class="block-configure nav-item"><a href="/drupalapigee/web/admin/structure/block/manage/apigee_kickstart_tabs?destination=/drupalapigee/web/user/5/create-app" class="nav-link">Configure block</a></li>  </ul>
+
+</div>
+
+      
+
+  <h2 class="visually-hidden" id="primary-tabs-title">Primary tabs</h2>
+  <nav aria-labelledby="primary-tabs-title" class="is-horizontal is-collapsible mb-3 position-container is-horizontal-enabled" data-drupal-nav-tabs="" role="navigation">
+    <button class="reset-appearance tabs__trigger" aria-label="Primary tabs display toggle" data-drupal-nav-tabs-trigger="">•••</button>
+    <ul class="tabs nav-tabs nav-tabs--primary clearfix" data-drupal-nav-tabs-target="">
+    <li class="nav-item tabs__tab active">
+  <a href="/drupalapigee/web/consumer/tabs" class="nav-link active">Existing Keys<span class="visually-hidden">(active tab)</span></a>
+</li>
+<li class="nav-item tabs__tab">
+  <a href="/drupalapigee/web/user/5/create-app" class="nav-link">Create New Keys</a>
+</li>
+</ul>
+  </nav>
+
+  
+  </div>
+
+
+      </div>
+    </div>
+
+{% for key,value in content %}
+  {% set link = '/user/' ~ user ~ '/apps/' ~ value ~ '/edit' %}
+  <div class="row">
+    <a href={{ link }}>{{ value }}</a>
+  </div>
+{% endfor %}

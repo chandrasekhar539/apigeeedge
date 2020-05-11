@@ -1,0 +1,111 @@
+<?php
+
+use Drupal\views\ViewEntityInterface;
+use Drupal\views\ViewExecutable;
+use Drupal\Core\Form\FormStateInterface;
+
+function consumer_preprocess_page(&$variables) {
+	echo "preprocess";
+	$request = \Drupal::request();
+    $session = $request->getSession();
+    $user = \Drupal::currentUser();
+    $user_id = $user->id();
+    $email = $user->getEmail();
+    //kint($email);
+    
+    
+    $developer_app_storage = \Drupal::entityTypeManager()->getStorage('developer_app');
+
+    foreach ($developer_app_storage->loadByDeveloper($email) as $app) {
+    //	kint($app->getCredentials());
+    }
+	$path = \Drupal::request()->getpathInfo();
+    $arg  = explode('/',$path);
+	$id = $arg[2];
+	$entityData = \Drupal::entityTypeManager()->getStorage('apidoc');
+
+// Load a single node.
+	if(!empty($id) && $arg[1] == 'api') {
+      $doc_load = $entityData->load($id);
+    }
+if(!empty($doc_load) && $arg[1] == 'api') {
+    $apidocSession = "id".$user_id;
+    $session->set($apidocSession, $id);
+}
+
+//kint($session->get($apidocSession));
+//kint($doc_load);
+}
+/**
+ * Implements hook_form_alter().
+ */
+function consumer_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+	$request = \Drupal::request();
+    $session = $request->getSession();
+    $user_id = \Drupal::currentUser()->id();
+    $apidocSession = "id".$user_id;
+    $apidoc_id = $session->get($apidocSession);
+    print $apidoc_id;
+	print $form_id;
+	//$form['description']['widget']['#title'] = 'Reason for access';
+	$form['description']['widget'][0]['value']['#title'] = 'Reason for access';
+	$form['description']['widget'][0]['value']['#required'] = true;
+	$form['field_api_owner_deputy_email']['#attributes']['class'] = array('deputyowner-email','hide');
+	$form['field_api_owner_email']['#attributes']['class'] = array('owner-email','hide');
+	$form['field_authenticat']['#attributes']['class'] = array('authentication','hide');
+	$form['field_environment']['#attributes']['class'] = array('environment','hide');
+	$form['api_products']['#attributes']['class'] = array('apiproduct','hide');
+	//kint($form['field_api_owner_deputy_email']);
+	//$form['api_products']['#default_value'] = array('payment','helloworld');
+
+}
+
+
+
+function consumer_views_pre_render(ViewExecutable $view) {
+	//print $view->id();die;
+	if($view->id() == 'cs_product_category') {
+		//kint($view->field['tid']);
+		foreach ($view->result as $key => $value) {
+			$tid = $value->tid;
+			$terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadChildren($tid);
+//kint($terms);
+foreach($terms as $term) {
+ $childTerm = $term->get('tid')->value;
+}
+//print $childTerm;
+			//$term_name = $value->get('tid')->value;
+			//print_r($term_name);print $tid;
+			$parent_count = \Drupal::database()->select('apidoc__field_categories')
+    ->condition('field_categories_target_id', $tid)
+    ->countQuery()
+    ->execute()
+    ->fetchField();
+    $child_count = \Drupal::database()->select('apidoc__field_categories')
+    ->condition('field_categories_target_id', $childTerm)
+    ->countQuery()
+    ->execute()
+    ->fetchField();
+    $total_count =  $parent_count + $child_count;
+    print_r($total_count);
+			//kint($value);
+			die;
+		}
+	}
+ //print_r($view->storage->id());die;
+}
+
+/**
+ * Implement hook_theme
+ *
+ */
+function consumer_theme($existing, $type, $theme, $path) {
+    return array(
+        'custom_add_app_form' => array(
+            'variables' => array(
+                'content' => NULL,
+                'user' => NULL
+            ),
+        ),
+    );
+}

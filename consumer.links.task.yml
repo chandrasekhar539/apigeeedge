@@ -1,0 +1,11 @@
+consumer.tabs:
+  route_name: consumer.tabs.default
+  title: Existing Keys
+  base_route: entity.developer_app.add_form_for_developer
+  weight: -4
+
+consumer.tabs_second:
+  route_name: entity.developer_app.add_form_for_developer
+  title: Create New Keys
+  base_route: entity.developer_app.add_form_for_developer
+  weight: -3

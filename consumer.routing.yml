@@ -1,0 +1,20 @@
+consumer.tabs.default:
+  path: '/consumer/tabs'
+  defaults:
+    _controller: '\Drupal\consumer\Controller\CustomAddAppForm::mainTab'
+  requirements:
+    _permission: 'access content'
+
+consumer.tabs.first:
+  path: '/consumer/tabs/first'
+  defaults:
+    _controller: '\Drupal\consumer\Controller\CustomAddAppForm::mainTab'
+  requirements:
+    _permission: 'access content'
+
+consumer.tabs.second:
+  path: '/user/5/second'
+  defaults:
+    _controller: '\Drupal\consumer\Controller\CustomAddAppForm::subTabTwo'
+  requirements:
+    _permission: 'access content'
