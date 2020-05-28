@@ -1,0 +1,5 @@
+services:
+  consumer.twig.TwigExtension:
+    class: Drupal\consumer\TwigExtension
+    tags:
+      - {name: twig.extension}
