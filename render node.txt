@@ -1,0 +1,17 @@
+class customModuleArticleController extends ControllerBase
+{ 
+    public function content(Request $request) {
+        $type = node_type_load("article"); // replace this with the node type in which we need to display the form for
+        $node = $this->entityManager()->getStorage('node')->create(array(
+          'type' => $type->id(),
+        ));
+        // OPTIONAL - Set default values for node fields
+        $node->set('field_age', "32") ;
+        $node_create_form = $this->entityFormBuilder()->getForm($node);  
+ 
+        return array(
+            '#type' => 'markup',
+            '#markup' => render($node_create_form),
+        );
+    }
+}
